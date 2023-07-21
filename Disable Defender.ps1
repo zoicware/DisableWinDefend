@@ -40,14 +40,6 @@ sleep 2
 Start-Process -FilePath explorer.exe -ArgumentList windowsdefender://threat -WindowStyle Maximized 
 sleep 2
 
-#getting windows security app window state
-
-
-
-pause
-
-
-
 
 $wshell = New-Object -ComObject wscript.shell
 
