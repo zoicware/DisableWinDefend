@@ -76,8 +76,6 @@ Start-Sleep -Milliseconds 100  # Wait for a moment
 sleep 2
 
 
-$wshell.SendKeys("{RIGHT}")
-sleep .65
 $wshell.SendKeys("{DOWN}")
 sleep .65
 $wshell.SendKeys("{DOWN}")
@@ -85,14 +83,6 @@ sleep .65
 $wshell.SendKeys("{DOWN}")
 sleep .65
 $wshell.SendKeys("{DOWN}")
-sleep .65
-$wshell.SendKeys("{LEFT}")
-sleep .65
-$wshell.SendKeys("{UP}")
-sleep .65
-$wshell.SendKeys("{UP}")
-sleep .65
-$wshell.SendKeys("{UP}")
 sleep .65
 $wshell.SendKeys(" ")
 sleep .65
