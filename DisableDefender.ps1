@@ -59,12 +59,20 @@ Remove-Item -LiteralPath "C:\Nsudo" -Recurse -Force -ErrorAction SilentlyContinu
 }
 
 #check if tamper protection is disabled already
-      $key = 'registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Features'
-      $tamper = Get-ItemPropertyValue -Path $key -Name 'TamperProtection' -ErrorAction SilentlyContinue
-      $tamperSource = Get-ItemPropertyValue -Path $key -Name 'TamperProtectionSource' -ErrorAction SilentlyContinue
-      if (!($tamper -eq '4' -or '0' -and $tamperSource -eq '2')) {
+$key = 'registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Features'
+try {
+  $tamper = Get-ItemPropertyValue -Path $key -Name 'TamperProtection' -ErrorAction Stop
+  $tamperSource = Get-ItemPropertyValue -Path $key -Name 'TamperProtectionSource' -ErrorAction Stop
+}
+catch {
+  #check tamper another way
+  $tamperAlt = (Get-MpPreference).DisableTamperProtection
+}
+      
+if ((!($tamper -eq '4' -or '0' -and $tamperSource -eq '2')) -or !$tamperAlt) {
        
-        #display prompt to user
+  #display prompt to user
+  [reflection.assembly]::loadwithpartialname('System.Windows.Forms') | Out-Null 
         [System.Windows.Forms.MessageBox]::Show('Please DO NOT Press Any Keys While Script Disables Tamper Protection.', 'ZOICWARE')
 
         #get current uac settings
