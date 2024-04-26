@@ -189,12 +189,18 @@ public class Keyboard
 
         #update tamper values
         $key = 'registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Features'
-        $tamper = Get-ItemPropertyValue -Path $key -Name 'TamperProtection' -ErrorAction SilentlyContinue
-        $tamperSource = Get-ItemPropertyValue -Path $key -Name 'TamperProtectionSource' -ErrorAction SilentlyContinue
+       try {
+  	$tamper = Get-ItemPropertyValue -Path $key -Name 'TamperProtection' -ErrorAction Stop
+  	$tamperSource = Get-ItemPropertyValue -Path $key -Name 'TamperProtectionSource' -ErrorAction Stop
+	}
+	catch {
+  	#check tamper another way
+  	$tamperAlt = (Get-MpPreference).DisableTamperProtection
+	}
       }
       
       #check again if tamper got disabled
-      if (!($tamper -eq '4' -or '0' -and $tamperSource -eq '2')) {
+      if ((!($tamper -eq '4' -or '0' -and $tamperSource -eq '2')) -or !$tamperAlt) {
         Write-Host 'Tamper Protection NOT Disabled...Closing Script' -ForegroundColor Red
       }
       else {
