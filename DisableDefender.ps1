@@ -65,11 +65,10 @@ try {
   $tamperSource = Get-ItemPropertyValue -Path $key -Name 'TamperProtectionSource' -ErrorAction Stop
 }
 catch {
-  #check tamper another way
-  $tamperAlt = (Get-MpPreference).DisableTamperProtection
+ #do nothing
 }
       
-if ((!($tamper -eq '4' -or '0' -and $tamperSource -eq '2')) -or !$tamperAlt) {
+if ((!($tamper -eq '4' -or '0' -and $tamperSource -eq '2')) -or !((Get-MpPreference).DisableTamperProtection)) {
        
   #display prompt to user
   [reflection.assembly]::loadwithpartialname('System.Windows.Forms') | Out-Null 
@@ -194,13 +193,12 @@ public class Keyboard
   	$tamperSource = Get-ItemPropertyValue -Path $key -Name 'TamperProtectionSource' -ErrorAction Stop
 	}
 	catch {
-  	#check tamper another way
-  	$tamperAlt = (Get-MpPreference).DisableTamperProtection
+  	#do nothing
 	}
       }
       
       #check again if tamper got disabled
-      if ((!($tamper -eq '4' -or '0' -and $tamperSource -eq '2')) -or !$tamperAlt) {
+      if ((!($tamper -eq '4' -or '0' -and $tamperSource -eq '2')) -or !((Get-MpPreference).DisableTamperProtection)) {
         Write-Host 'Tamper Protection NOT Disabled...Closing Script' -ForegroundColor Red
       }
       else {
